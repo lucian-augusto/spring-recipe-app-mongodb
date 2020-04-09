@@ -4,10 +4,15 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -28,8 +33,6 @@ public class Recipe {
 	private String source;
 	private String url;
 	private String directions;
-//	todo add
-//	private Difficulty difficulty;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe") // Setting up the One-to-Many relationship between Recipe and Ingredient.
 	// We're using the cascade type to persist all operations and map it by a property of the child class(recipe in this case), which is where
@@ -40,9 +43,20 @@ public class Recipe {
 	// Large Object Field - Blob)
 	private Byte[] image;
 	
+	@Enumerated(value = EnumType.STRING) // Saving the values of the enumeration as strings and not Ordinal numbers (which is the default)
+	private Difficulty difficulty;
+	
 	@OneToOne(cascade = CascadeType.ALL) // Creating the relationship between Recipe and Notes (one to one mapping) and setting up a cascade
 	// so that Recipe can be the owner
 	private Notes notes;
+	
+	@ManyToMany
+	@JoinTable(name = "recipe_category",
+			joinColumns = @JoinColumn(name = "recipe_id"),
+			inverseJoinColumns = @JoinColumn(name = "category_id")) // Creating the relationship between the elements that belong to each class
+			// that are present in the DB. It's necessary to join the tables to avoid the creation of unnecessary tables in the relaional
+			// DB.
+	private Set<Category> categories;
 	
 //	Getters and Setters
 	public Long getId() {
@@ -122,5 +136,29 @@ public class Recipe {
 	
 	public void setNotes(Notes notes) {
 		this.notes = notes;
+	}
+
+	public Set<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(Set<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
+	}
+
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
 	}	
 }
