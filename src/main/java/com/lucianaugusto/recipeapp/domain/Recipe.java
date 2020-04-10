@@ -1,5 +1,6 @@
 package com.lucianaugusto.recipeapp.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -32,12 +33,14 @@ public class Recipe {
 	private Integer servings;
 	private String source;
 	private String url;
+	
+	@Lob
 	private String directions;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe") // Setting up the One-to-Many relationship between Recipe and Ingredient.
 	// We're using the cascade type to persist all operations and map it by a property of the child class(recipe in this case), which is where
 	// this object will be stored as a property.
-	private Set<Ingredient> ingredients;
+	private Set<Ingredient> ingredients = new HashSet<Ingredient>(); // Avoiding null pointer errors
 	
 	@Lob // Using this annotation to specify a large object (Increasing the size limit of the Byte array, which will be created as a Binary
 	// Large Object Field - Blob)
@@ -54,9 +57,9 @@ public class Recipe {
 	@JoinTable(name = "recipe_category",
 			joinColumns = @JoinColumn(name = "recipe_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id")) // Creating the relationship between the elements that belong to each class
-			// that are present in the DB. It's necessary to join the tables to avoid the creation of unnecessary tables in the relaional
+			// that are present in the DB. It's necessary to join the tables to avoid the creation of unnecessary tables in the relational
 			// DB.
-	private Set<Category> categories;
+	private Set<Category> categories = new HashSet<Category>(); // Avoiding null pointer errors
 	
 //	Getters and Setters
 	public Long getId() {

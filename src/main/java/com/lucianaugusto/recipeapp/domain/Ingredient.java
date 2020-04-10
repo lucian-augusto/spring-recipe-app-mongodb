@@ -26,6 +26,16 @@ public class Ingredient {
 	
 	@ManyToOne // No cascade (default value = none)
 	private Recipe recipe;
+	
+	
+//	Constructor
+	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum, Recipe recipe) {
+			this.description = description;
+			this.amount = amount;
+			this.oum = oum;
+			this.recipe = recipe;
+		}
+	
 
 //	Getters and Setters
 	public Long getId() {
