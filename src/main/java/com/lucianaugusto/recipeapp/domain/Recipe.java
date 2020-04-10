@@ -139,6 +139,15 @@ public class Recipe {
 	
 	public void setNotes(Notes notes) {
 		this.notes = notes;
+		notes.setRecipe(this); // Automatically builds the association between the notes and adds it into the current recipe, encapsulating
+		// the logic so that we don't have to do it outside the class
+	}
+	
+	public Recipe addIngredient(Ingredient ingredient) { // Builds the association for the bi-directional association, encapsulating the
+		// logic in a single spot
+		ingredient.setRecipe(this);
+		this.ingredients.add(ingredient);
+		return this;
 	}
 
 	public Set<Ingredient> getIngredients() {

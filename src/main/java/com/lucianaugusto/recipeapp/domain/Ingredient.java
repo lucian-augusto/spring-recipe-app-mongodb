@@ -28,7 +28,16 @@ public class Ingredient {
 	private Recipe recipe;
 	
 	
-//	Constructor
+//	Constructors
+	public Ingredient() {
+	}
+	
+	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum) {
+		this.description = description;
+		this.amount = amount;
+		this.oum = oum;
+	}
+	
 	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum, Recipe recipe) {
 			this.description = description;
 			this.amount = amount;
@@ -36,7 +45,6 @@ public class Ingredient {
 			this.recipe = recipe;
 		}
 	
-
 //	Getters and Setters
 	public Long getId() {
 		return Id;
