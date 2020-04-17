@@ -12,6 +12,9 @@ import com.lucianaugusto.recipeapp.repositories.CategoryRepository;
 import com.lucianaugusto.recipeapp.repositories.UnitOfMeasureRepository;
 import com.lucianaugusto.recipeapp.services.RecipeService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class IndexController {
 	
@@ -27,6 +30,7 @@ public class IndexController {
 	public String getIndexPage(Model model) {
 
 		model.addAttribute("recipes", recipeService.getRecipes());
+		log.debug("Controller Log");
 		
 		return "index";
 	}

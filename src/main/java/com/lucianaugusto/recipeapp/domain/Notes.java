@@ -7,6 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(exclude = {"recipe"}) // Avoiding the Circular reference problem that results in a StackOverflow error by excluding 
+//the equals and hashcodes for the dominant side of the relationship on the non-dominant class
 @Entity
 public class Notes {
 
@@ -22,27 +28,5 @@ public class Notes {
 	@Lob // Using this annotation to specify a large object (Increasing the size limit of the Notes which will be created as a Class
 	// Large Object Field - Clob)
 	private String recipeNotes;
-	
-//	Getters and Setters
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Recipe getRecipe() {
-		return recipe;
-	}
-	public void setRecipe(Recipe recipe) {
-		this.recipe = recipe;
-	}
-	public String getRecipeNotes() {
-		return recipeNotes;
-	}
-	public void setRecipeNotes(String recipeNotes) {
-		this.recipeNotes = recipeNotes;
-	}
-	
-	
-	
+
 }

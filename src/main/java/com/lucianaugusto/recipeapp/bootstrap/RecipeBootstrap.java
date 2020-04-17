@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lucianaugusto.recipeapp.domain.Category;
 import com.lucianaugusto.recipeapp.domain.Difficulty;
@@ -19,6 +20,9 @@ import com.lucianaugusto.recipeapp.repositories.CategoryRepository;
 import com.lucianaugusto.recipeapp.repositories.RecipeRepository;
 import com.lucianaugusto.recipeapp.repositories.UnitOfMeasureRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -35,6 +39,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 	}
 	
 	@Override
+	@Transactional // Avoiding errors with timing on lazy initializations (May or may not appear) 
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		recipeRepository.saveAll(getRecipes());
 	}
@@ -148,6 +153,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         //add to return list
         recipes.add(guacRecipe);
+        
+        log.debug("Adding Guacamole to the Recipe Repository");
 
         //Yummy Tacos
         Recipe tacosRecipe = new Recipe();
@@ -206,6 +213,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         tacosRecipe.getCategories().add(mexicanCategory);
 
         recipes.add(tacosRecipe);
+        
+        log.debug("Adding Taco to the Recipe Repository");
+        
         return recipes;
 	}
 }

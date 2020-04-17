@@ -10,6 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(exclude = {"recipe"}) // Avoiding the Circular reference problem that results in a StackOverflow error by excluding 
+//the equals and hashcodes for the dominant side of the relationship on the non-dominant class
 @Entity
 public class Ingredient {
 
@@ -26,64 +32,20 @@ public class Ingredient {
 	
 	@ManyToOne // No cascade (default value = none)
 	private Recipe recipe;
-	
-	
-//	Constructors
-	public Ingredient() {
+
+//		Constructors
+	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum, Recipe recipe) {
+		this.description = description;
+		this.amount = amount;
+		this.oum = oum;
+		this.recipe = recipe;
 	}
-	
+
 	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum) {
 		this.description = description;
 		this.amount = amount;
 		this.oum = oum;
 	}
-	
-	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum, Recipe recipe) {
-			this.description = description;
-			this.amount = amount;
-			this.oum = oum;
-			this.recipe = recipe;
-		}
-	
-//	Getters and Setters
-	public Long getId() {
-		return Id;
-	}
 
-	public void setId(Long id) {
-		Id = id;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public Recipe getRecipe() {
-		return recipe;
-	}
-
-	public void setRecipe(Recipe recipe) {
-		this.recipe = recipe;
-	}
-
-	public UnitOfMeasure getOum() {
-		return oum;
-	}
-
-	public void setOum(UnitOfMeasure oum) {
-		this.oum = oum;
-	}
 	
 }
