@@ -34,6 +34,8 @@ public class Ingredient {
 	private Recipe recipe;
 
 //		Constructors
+	
+	
 	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum, Recipe recipe) {
 		this.description = description;
 		this.amount = amount;
@@ -47,5 +49,6 @@ public class Ingredient {
 		this.oum = oum;
 	}
 
-	
+	public Ingredient() {
+	}
 }
