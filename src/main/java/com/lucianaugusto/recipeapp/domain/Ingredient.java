@@ -28,7 +28,7 @@ public class Ingredient {
 	private BigDecimal amount;
 	
 	@OneToOne(fetch = FetchType.EAGER) // Explicitly setting the fetch type
-	private UnitOfMeasure oum;
+	private UnitOfMeasure uom;
 	
 	@ManyToOne // No cascade (default value = none)
 	private Recipe recipe;
@@ -39,14 +39,14 @@ public class Ingredient {
 	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum, Recipe recipe) {
 		this.description = description;
 		this.amount = amount;
-		this.oum = oum;
+		this.uom = oum;
 		this.recipe = recipe;
 	}
 
 	public Ingredient(String description, BigDecimal amount, UnitOfMeasure oum) {
 		this.description = description;
 		this.amount = amount;
-		this.oum = oum;
+		this.uom = oum;
 	}
 
 	public Ingredient() {

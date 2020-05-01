@@ -1,11 +1,11 @@
 package com.lucianaugusto.recipeapp.repositories;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Optional;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,24 +15,24 @@ import com.lucianaugusto.recipeapp.domain.UnitOfMeasure;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-class UnitOfMeasureRepositoryIT {
+public class UnitOfMeasureRepositoryIT {
 	
 	@Autowired
 	UnitOfMeasureRepository unitOfMeasureRepository;
 
 	@Before
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
 	}
 
 	@Test
-	void testFindByDescription() {
+	public void testFindByDescription() {
 		Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
 		
 		assertEquals("Teaspoon", uomOptional.get().getDescription());
 	}
 	
 	@Test
-	void testFindByDescriptionCup() {
+	public void testFindByDescriptionCup() {
 		Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Cup");
 		
 		assertEquals("Cup", uomOptional.get().getDescription());
