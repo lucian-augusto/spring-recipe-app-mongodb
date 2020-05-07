@@ -66,9 +66,11 @@ public class Recipe {
 	
 //	Custom Setter for notes
 	public void setNotes(Notes notes) {
-		this.notes = notes;
-		notes.setRecipe(this); // Automatically builds the association between the notes and adds it into the current recipe, encapsulating
-		// the logic so that we don't have to do it outside the class
+		if (notes != null) {
+			this.notes = notes;
+			notes.setRecipe(this); // Automatically builds the association between the notes and adds it into the current recipe, encapsulating
+			// the logic so that we don't have to do it outside the class
+		}
 	}
 	
 	public Recipe addIngredient(Ingredient ingredient) { // Builds the association for the bi-directional association, encapsulating the

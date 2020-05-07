@@ -16,6 +16,8 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.lucianaugusto.recipeapp.converters.RecipeCommandToRecipe;
+import com.lucianaugusto.recipeapp.converters.RecipeToRecipeCommand;
 import com.lucianaugusto.recipeapp.domain.Recipe;
 import com.lucianaugusto.recipeapp.repositories.RecipeRepository;
 
@@ -25,12 +27,18 @@ public class RecipeServiceImplTest {
 	
 	@Mock
 	RecipeRepository recipeRepository;
+	
+	@Mock
+	RecipeCommandToRecipe recipeCommandToRecipe;
+	
+	@Mock
+	RecipeToRecipeCommand recipeToRecipeCommand;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		
-		recipeService = new RecipeServiceImpl(recipeRepository);
+		recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
 	}
 	
 	@Test
