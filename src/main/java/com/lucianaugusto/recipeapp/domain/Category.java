@@ -8,10 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = {"recipes"}) // Avoiding the Circular reference problem that results in a StackOverflow error by excluding 
 // the equals and hashcodes for the dominant side of the relationship on the non-dominant class
 @Entity

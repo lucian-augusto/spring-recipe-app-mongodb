@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.lucianaugusto.recipeapp.commands.IngredientCommand;
+import com.lucianaugusto.recipeapp.commands.RecipeCommand;
+import com.lucianaugusto.recipeapp.commands.UnitOfMeasureCommand;
 import com.lucianaugusto.recipeapp.services.IngredientService;
 import com.lucianaugusto.recipeapp.services.RecipeService;
 import com.lucianaugusto.recipeapp.services.UnitOfMeasureService;
@@ -38,6 +40,21 @@ public class IngredientController {
 		model.addAttribute("recipe", recipeService.findCommandById(recipeId));
 		
 		return "recipe/ingredient/list";
+	}
+	
+	@GetMapping("recipe/{recipeId}/ingredient/new")
+	public String newRecipeIngredient(@PathVariable Long recipeId, Model model) {
+		RecipeCommand recipeCommand = recipeService.findCommandById(recipeId);
+		// TODO Raise exception if null
+		
+		IngredientCommand ingredientCommand = new IngredientCommand();
+		ingredientCommand.setRecipeId(recipeId);
+		model.addAttribute("ingredient", ingredientCommand);
+		
+		ingredientCommand.setUom(new UnitOfMeasureCommand());
+		model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+		
+		return "recipe/ingredient/ingredientform";
 	}
 	
 	@GetMapping
