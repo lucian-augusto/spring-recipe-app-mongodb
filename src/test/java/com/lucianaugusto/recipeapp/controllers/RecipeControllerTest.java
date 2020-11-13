@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.lucianaugusto.recipeapp.commands.RecipeCommand;
+import com.lucianaugusto.recipeapp.domain.Recipe;
+import com.lucianaugusto.recipeapp.exceptions.NotFoundException;
 import com.lucianaugusto.recipeapp.services.RecipeService;
 
 public class RecipeControllerTest {
@@ -50,6 +52,18 @@ public class RecipeControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("recipe/show"))
 			.andExpect(model().attributeExists("recipe"));
+	}
+	
+	@Test
+	public void getRecipeNotFoundTest() throws Exception {
+		Long id = 1L;
+		RecipeCommand command = new RecipeCommand();
+		command.setId(id);
+		
+		when(recipeService.findCommandById(ArgumentMatchers.anyLong())).thenThrow(NotFoundException.class);
+		
+		mockMvc.perform(get("/recipe/" + id + "/show"))
+			.andExpect(status().isNotFound());
 	}
 	
 	@Test

@@ -11,6 +11,7 @@ import com.lucianaugusto.recipeapp.commands.RecipeCommand;
 import com.lucianaugusto.recipeapp.converters.RecipeCommandToRecipe;
 import com.lucianaugusto.recipeapp.converters.RecipeToRecipeCommand;
 import com.lucianaugusto.recipeapp.domain.Recipe;
+import com.lucianaugusto.recipeapp.exceptions.NotFoundException;
 import com.lucianaugusto.recipeapp.repositories.RecipeRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,7 @@ public class RecipeServiceImpl implements RecipeService {
 		Optional<Recipe> recipeOptional = recipeRepository.findById(id);
 		
 		if (!recipeOptional.isPresent()) {
-			throw new RuntimeException("Recipe Not Found!");
+			throw new NotFoundException("Recipe not found");
 		}
 		return recipeOptional.get();
 	}
