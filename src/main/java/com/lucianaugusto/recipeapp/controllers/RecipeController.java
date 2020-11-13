@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -73,17 +72,6 @@ public class RecipeController {
 		log.error(e.getMessage());
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("error404");
-		modelAndView.addObject("exception", e); 
-		
-		return modelAndView;
-	}
-	
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(NumberFormatException.class)
-	public ModelAndView handleNumberFormatException(Exception e) {
-		log.error(e.getMessage());
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("errorBadRequest");
 		modelAndView.addObject("exception", e); 
 		
 		return modelAndView;
