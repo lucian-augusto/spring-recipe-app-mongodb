@@ -41,3 +41,8 @@ jobs:
 
         # run tests!
         - run: mvn integration-test
+
+        - run:
+            name: Upload to CodeCov
+            commnad: bash <(curl -s https://codecov.io/bash)
+
