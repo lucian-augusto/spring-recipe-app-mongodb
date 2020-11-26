@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/lucian-augusto/spring-recipe-app.svg?style=shield)](https://circleci.com/gh/lucian-augusto/spring-recipe-app) [![codecov](https://codecov.io/gh/lucian-augusto/spring-recipe-app/branch/master/graph/badge.svg?token=5XLJFYMIR8)](https://codecov.io/gh/lucian-augusto/spring-recipe-app)
+[![CircleCI](https://circleci.com/gh/lucian-augusto/spring-recipe-app-mongodb.svg?style=shield)](https://circleci.com/gh/lucian-augusto/spring-recipe-app-mongodb) [![codecov](https://codecov.io/gh/lucian-augusto/spring-recipe-app-mongodb/branch/master/graph/badge.svg?token=DF1UJC4S3F)](https://codecov.io/gh/lucian-augusto/spring-recipe-app-mongodb)
 
-# spring-recipe-app
-Simple recipes app made using Java and the Spring Framework.
+# spring-recipe-app-mongoDB
+MongoDB version of the recipes app made using Spring Framework (Java).
