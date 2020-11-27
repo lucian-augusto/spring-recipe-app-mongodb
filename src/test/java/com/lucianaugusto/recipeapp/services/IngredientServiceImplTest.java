@@ -83,7 +83,6 @@ public class IngredientServiceImplTest {
 
 		IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(id, id3);
 
-		assertEquals(id, ingredientCommand.getRecipeId());
 		assertEquals(id3, ingredientCommand.getId());
 		verify(recipeRepository).findById(ArgumentMatchers.anyString());
 	}
@@ -121,7 +120,6 @@ public class IngredientServiceImplTest {
 		Ingredient ingredient = new Ingredient();
 		ingredient.setId(ingredientId);
 		recipe.addIngredient(ingredient);
-		ingredient.setRecipe(recipe);
 
 		Optional<Recipe> recipeOptional = Optional.of(recipe);
 

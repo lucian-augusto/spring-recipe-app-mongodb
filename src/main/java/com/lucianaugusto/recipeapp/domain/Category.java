@@ -2,19 +2,23 @@ package com.lucianaugusto.recipeapp.domain;
 
 import java.util.Set;
 
-import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = { "recipes" }) // Avoiding the Circular reference problem that results in a StackOverflow
-// error by excluding the equals and hashcodes for the dominant side of the relationship on the non-dominant class
+@Document
 public class Category {
 
+	@Id
 	private String id;
 
 	private String description;
 
+	@DBRef
 	private Set<Recipe> recipes;
 }
