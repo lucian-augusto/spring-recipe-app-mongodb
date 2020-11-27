@@ -8,12 +8,12 @@ import com.lucianaugusto.recipeapp.domain.Recipe;
 public interface RecipeService {
 
 	Set<Recipe> getRecipes();
-	
-	Recipe findById(Long id);
-	
-	RecipeCommand findCommandById(Long id);
-	
+
+	Recipe findById(String id);
+
+	RecipeCommand findCommandById(String id);
+
 	RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand);
-	
-	void deleteById(Long id);
+
+	void deleteById(String id);
 }

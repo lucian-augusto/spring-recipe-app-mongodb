@@ -14,24 +14,24 @@ import com.lucianaugusto.recipeapp.commands.UnitOfMeasureCommand;
 import com.lucianaugusto.recipeapp.domain.Ingredient;
 
 public class IngredientCommandToIngredientTest {
-	
-	public static final Long ID_VALUE = 1L;
+
+	public static final String ID_VALUE = "123";
 	public static final String DESCRIPTION = "description";
 	public static final BigDecimal AMOUNT = new BigDecimal(1);
-	public static final Long UOM_ID = 2L;
-	
+	public static final String UOM_ID = "321";
+
 	IngredientCommandToIngredient converter;
 
 	@Before
 	public void setUp() throws Exception {
 		converter = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
 	}
-	
+
 	@Test
 	public void testNullObject() throws Exception {
 		assertNull(converter.convert(null));
 	}
-	
+
 	@Test
 	public void testEmptyObject() throws Exception {
 		assertNotNull(converter.convert(new IngredientCommand()));
@@ -44,15 +44,15 @@ public class IngredientCommandToIngredientTest {
 		command.setId(ID_VALUE);
 		command.setDescription(DESCRIPTION);
 		command.setAmount(AMOUNT);
-		
+
 		UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand();
 		uomCommand.setId(UOM_ID);
-		
+
 		command.setUom(uomCommand);
-		
+
 		// when
 		Ingredient ingredient = converter.convert(command);
-		
+
 		// then
 		assertNotNull(ingredient);
 		assertEquals(ID_VALUE, ingredient.getId());
@@ -60,7 +60,7 @@ public class IngredientCommandToIngredientTest {
 		assertEquals(AMOUNT, ingredient.getAmount());
 		assertNotNull(ingredient.getUom());
 	}
-	
+
 	@Test
 	public void testConvertWithNullUOM() throws Exception {
 		// given
@@ -68,10 +68,10 @@ public class IngredientCommandToIngredientTest {
 		command.setId(ID_VALUE);
 		command.setDescription(DESCRIPTION);
 		command.setAmount(AMOUNT);
-		
+
 		// when
 		Ingredient ingredient = converter.convert(command);
-		
+
 		// then
 		assertNotNull(ingredient);
 		assertEquals(ID_VALUE, ingredient.getId());

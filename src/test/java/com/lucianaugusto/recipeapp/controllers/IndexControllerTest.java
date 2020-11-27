@@ -1,6 +1,6 @@
 package com.lucianaugusto.recipeapp.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,13 +25,13 @@ import com.lucianaugusto.recipeapp.domain.Recipe;
 import com.lucianaugusto.recipeapp.services.RecipeService;
 
 public class IndexControllerTest {
-	
+
 	@Mock
 	RecipeService recipeService;
-	
+
 	@Mock
 	Model model;
-	
+
 	IndexController controller;
 
 	@Before
@@ -39,34 +39,32 @@ public class IndexControllerTest {
 		MockitoAnnotations.initMocks(this);
 		controller = new IndexController(recipeService);
 	}
-	
+
 	@Test
 	public void testMockMVC() throws Exception {
 		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-		
-		mockMvc.perform(MockMvcRequestBuilders.get("/"))
-			.andExpect(status().isOk())
-			.andExpect(view().name("index"));
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/")).andExpect(status().isOk()).andExpect(view().name("index"));
 	}
 
 	@Test
 	public void testGetIndexPage() {
-		
+
 		// Given
-		Set<Recipe> recipes = new HashSet<Recipe>();
+		Set<Recipe> recipes = new HashSet<>();
 		recipes.add(new Recipe());
-		
+
 		Recipe recipe = new Recipe();
-		recipe.setId(1L);
+		recipe.setId("1");
 		recipes.add(recipe);
-		
+
 		when(recipeService.getRecipes()).thenReturn(recipes);
-		
+
 		ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
-		
+
 		// When
 		String viewName = controller.getIndexPage(model);
-		
+
 		// Then
 		assertEquals("index", viewName);
 		verify(recipeService, times(1)).getRecipes();

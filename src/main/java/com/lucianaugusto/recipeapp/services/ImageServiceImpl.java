@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ImageServiceImpl implements ImageService {
-	
+
 	private final RecipeRepository recipeRepository;
 
 	public ImageServiceImpl(RecipeRepository recipeRepository) {
@@ -21,28 +21,29 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	public void saveImageFile(Long recipeId, MultipartFile file) {
+	public void saveImageFile(String recipeId, MultipartFile file) {
 		log.debug("Received a file");
 		try {
 			Recipe recipe = recipeRepository.findById(recipeId).get();
-			
+
 			Byte[] byteObjects = new Byte[file.getBytes().length];
-			
+
 			int i = 0;
-			
-			for (byte b : file.getBytes()) { // Since there's not autoboxing for arrays, we have to do it manually from scratch
+
+			for (byte b : file.getBytes()) { // Since there's not autoboxing for arrays, we have to do it manually from
+												// scratch
 				byteObjects[i++] = b;
 			}
-			
+
 			recipe.setImage(byteObjects);
-			
+
 			recipeRepository.save(recipe);
-			
+
 		} catch (IOException e) {
 			// TODO improve error handling
 			log.error("Error occurred " + e);
 			e.printStackTrace();
 		}
-		
+
 	}
 }

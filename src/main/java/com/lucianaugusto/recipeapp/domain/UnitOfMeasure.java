@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class UnitOfMeasure {
 
-	private Long id;
+	private String id;
 
 	private String description;
 

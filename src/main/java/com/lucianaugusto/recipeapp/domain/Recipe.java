@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class Recipe {
 
-	private Long id; // To be able to use this entity in a relational database, it must have an Id
+	private String id; // To be able to use this entity in a relational database, it must have an Id
 						// value
 
 	private String description;

@@ -11,7 +11,7 @@ import lombok.Setter;
 //the equals and hashcodes for the dominant side of the relationship on the non-dominant class
 public class Notes {
 
-	private Long id;
+	private String id;
 
 	private Recipe recipe;
 

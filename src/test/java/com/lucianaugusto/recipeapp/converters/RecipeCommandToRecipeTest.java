@@ -15,8 +15,8 @@ import com.lucianaugusto.recipeapp.domain.Difficulty;
 import com.lucianaugusto.recipeapp.domain.Recipe;
 
 public class RecipeCommandToRecipeTest {
-	
-	public static final Long ID_VALUE = 1L;
+
+	public static final String ID_VALUE = "123";
 	public static final String DESCRIPTION = "Description";
 	public static final Integer PREP_TIME = Integer.valueOf("7");
 	public static final Integer COOK_TIME = Integer.valueOf("5");
@@ -25,12 +25,12 @@ public class RecipeCommandToRecipeTest {
 	public static final String URL = "https://url.com";
 	public static final String DIRECTIONS = "Do this!";
 	public static final Difficulty DIFFICULTY = Difficulty.EASY;
-	public static final Long NOTES_ID = 2L;
-	public static final Long CATEGORY_ID_1 = 3L;
-	public static final Long CATEGORY_ID_2 = 4L;
-	public static final Long INGREDIENT_ID_1 = 5L;
-	public static final Long INGREDIENT_ID_2 = 6L;
-	
+	public static final String NOTES_ID = "2";
+	public static final String CATEGORY_ID_1 = "3";
+	public static final String CATEGORY_ID_2 = "4";
+	public static final String INGREDIENT_ID_1 = "5";
+	public static final String INGREDIENT_ID_2 = "6";
+
 	RecipeCommandToRecipe converter;
 
 	@Before
@@ -39,12 +39,12 @@ public class RecipeCommandToRecipeTest {
 				new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure()),
 				new NotesCommandToNotes());
 	}
-	
+
 	@Test
 	public void testNullObject() throws Exception {
 		assertNull(converter.convert(null));
 	}
-	
+
 	@Test
 	public void testEmptyObject() throws Exception {
 		assertNotNull(converter.convert(new RecipeCommand()));
@@ -55,17 +55,17 @@ public class RecipeCommandToRecipeTest {
 		// Given
 		NotesCommand notesCommand = new NotesCommand();
 		notesCommand.setId(NOTES_ID);
-		
+
 		CategoryCommand categoryCommand1 = new CategoryCommand();
 		categoryCommand1.setId(CATEGORY_ID_1);
 		CategoryCommand categoryCommand2 = new CategoryCommand();
 		categoryCommand2.setId(CATEGORY_ID_2);
-		
+
 		IngredientCommand ingredientCommand1 = new IngredientCommand();
 		ingredientCommand1.setId(INGREDIENT_ID_1);
 		IngredientCommand ingredientCommand2 = new IngredientCommand();
 		ingredientCommand2.setId(INGREDIENT_ID_2);
-		
+
 		RecipeCommand recipeCommand = new RecipeCommand();
 		recipeCommand.setId(ID_VALUE);
 		recipeCommand.setDescription(DESCRIPTION);
@@ -81,10 +81,10 @@ public class RecipeCommandToRecipeTest {
 		recipeCommand.getCategories().add(categoryCommand2);
 		recipeCommand.getIngredients().add(ingredientCommand1);
 		recipeCommand.getIngredients().add(ingredientCommand2);
-		
+
 		// When
 		Recipe recipe = converter.convert(recipeCommand);
-		
+
 		// Then
 		assertNotNull(recipe);
 		assertEquals(ID_VALUE, recipe.getId());

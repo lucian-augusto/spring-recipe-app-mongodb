@@ -29,28 +29,28 @@ public class RecipeController {
 	public RecipeController(RecipeService recipeService) {
 		this.recipeService = recipeService;
 	}
-	
+
 	@GetMapping("/recipe/{id}/show")
 	public String showById(@PathVariable String id, Model model) {
-		model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
-		
+		model.addAttribute("recipe", recipeService.findCommandById(id));
+
 		return "recipe/show";
 	}
-	
+
 	@GetMapping("recipe/new")
 	public String newRecipe(Model model) {
 		model.addAttribute("recipe", new RecipeCommand());
-		
+
 		return "recipe/recipeform";
 	}
-	
+
 	@GetMapping("recipe/{id}/update")
 	public String updateRecipe(@PathVariable String id, Model model) {
-		model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
-		
+		model.addAttribute("recipe", recipeService.findCommandById(id));
+
 		return "recipe/recipeform";
 	}
-	
+
 //	@RequestMapping(name = "recipe", method = RequestMethod.POST) // Old way
 	@PostMapping("recipe") // New way of mapping HTTP requests
 	public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand command, BindingResult result) {
@@ -60,21 +60,21 @@ public class RecipeController {
 			});
 			return "recipe/recipeform";
 		}
-		
+
 		RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
-		
+
 		return "redirect:/recipe/" + savedCommand.getId() + "/show";
 	}
-	
+
 	@GetMapping("recipe/{id}/delete")
-	public String deleteById(@PathVariable Long id) {
+	public String deleteById(@PathVariable String id) {
 		log.debug("Deleting id: " + id);
-		
+
 		recipeService.deleteById(id);
-		
+
 		return "redirect:/";
 	}
-	
+
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(NotFoundException.class)
 	public ModelAndView handleNotFound(Exception e) {
@@ -82,8 +82,8 @@ public class RecipeController {
 		log.error(e.getMessage());
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("error404");
-		modelAndView.addObject("exception", e); 
-		
+		modelAndView.addObject("exception", e);
+
 		return modelAndView;
 	}
 }

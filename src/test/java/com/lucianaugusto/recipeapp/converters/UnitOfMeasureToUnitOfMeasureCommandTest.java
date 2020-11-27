@@ -11,22 +11,22 @@ import com.lucianaugusto.recipeapp.commands.UnitOfMeasureCommand;
 import com.lucianaugusto.recipeapp.domain.UnitOfMeasure;
 
 public class UnitOfMeasureToUnitOfMeasureCommandTest {
-	
-	private static final Long ID_VALUE = 1L;
+
+	private static final String ID_VALUE = "1";
 	private static final String DESCRIPTION = "description";
-	
+
 	UnitOfMeasureToUnitOfMeasureCommand converter;
 
 	@Before
 	public void setUp() throws Exception {
 		converter = new UnitOfMeasureToUnitOfMeasureCommand();
 	}
-	
+
 	@Test
 	public void testNullObject() throws Exception {
 		assertNull(converter.convert(null));
 	}
-	
+
 	@Test
 	public void testEmptyObject() throws Exception {
 		assertNotNull(converter.convert(new UnitOfMeasure()));
@@ -38,10 +38,10 @@ public class UnitOfMeasureToUnitOfMeasureCommandTest {
 		UnitOfMeasure uom = new UnitOfMeasure();
 		uom.setId(ID_VALUE);
 		uom.setDescription(DESCRIPTION);
-		
+
 		// when
 		UnitOfMeasureCommand command = converter.convert(uom);
-		
+
 		// then
 		assertEquals(ID_VALUE, command.getId());
 		assertEquals(DESCRIPTION, command.getDescription());

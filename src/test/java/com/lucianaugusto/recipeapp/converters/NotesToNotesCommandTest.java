@@ -11,10 +11,10 @@ import com.lucianaugusto.recipeapp.commands.NotesCommand;
 import com.lucianaugusto.recipeapp.domain.Notes;
 
 public class NotesToNotesCommandTest {
-	
-	public static final Long ID_VALUE = 1L;
+
+	public static final String ID_VALUE = "123";
 	public static final String RECIPE_NOTES = "Notes";
-	
+
 	NotesToNotesCommand converter;
 
 	@Before
@@ -26,22 +26,22 @@ public class NotesToNotesCommandTest {
 	public void testNullObject() throws Exception {
 		assertNull(converter.convert(null));
 	}
-	
+
 	@Test
 	public void testEmptyObject() throws Exception {
 		assertNotNull(converter.convert(new Notes()));
 	}
-	
+
 	@Test
 	public void testConvert() throws Exception {
 		// Given
 		Notes notes = new Notes();
 		notes.setId(ID_VALUE);
 		notes.setRecipeNotes(RECIPE_NOTES);
-		
+
 		// When
 		NotesCommand command = converter.convert(notes);
-		
+
 		// Then
 		assertNotNull(command);
 		assertEquals(ID_VALUE, command.getId());

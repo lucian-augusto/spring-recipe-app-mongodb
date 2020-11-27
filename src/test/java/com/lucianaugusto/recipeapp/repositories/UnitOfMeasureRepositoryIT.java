@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Optional;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.lucianaugusto.recipeapp.domain.UnitOfMeasure;
 
+@Ignore
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class UnitOfMeasureRepositoryIT {
-	
+
 	@Autowired
 	UnitOfMeasureRepository unitOfMeasureRepository;
 
@@ -27,14 +29,14 @@ public class UnitOfMeasureRepositoryIT {
 	@Test
 	public void testFindByDescription() {
 		Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
-		
+
 		assertEquals("Teaspoon", uomOptional.get().getDescription());
 	}
-	
+
 	@Test
 	public void testFindByDescriptionCup() {
 		Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Cup");
-		
+
 		assertEquals("Cup", uomOptional.get().getDescription());
 	}
 

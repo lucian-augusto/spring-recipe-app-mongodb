@@ -18,35 +18,36 @@ import com.lucianaugusto.recipeapp.domain.UnitOfMeasure;
 import com.lucianaugusto.recipeapp.repositories.UnitOfMeasureRepository;
 
 public class UnitOfMeasureServiceImplTest {
-	
+
 	UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand = new UnitOfMeasureToUnitOfMeasureCommand();
 	UnitOfMeasureService unitOfMeasureService;
 
 	@Mock
 	UnitOfMeasureRepository unitOfMeasureRepository;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		
-		unitOfMeasureService = new UnitOfMeasureServiceImpl(unitOfMeasureRepository, unitOfMeasureToUnitOfMeasureCommand);
+
+		unitOfMeasureService = new UnitOfMeasureServiceImpl(unitOfMeasureRepository,
+				unitOfMeasureToUnitOfMeasureCommand);
 	}
-	
+
 	@Test
 	public void testListAllUoms() throws Exception {
-		Set<UnitOfMeasure> unitOfMeasures = new HashSet<UnitOfMeasure>();
+		Set<UnitOfMeasure> unitOfMeasures = new HashSet<>();
 		UnitOfMeasure uom1 = new UnitOfMeasure();
-		uom1.setId(1L);
+		uom1.setId("1");
 		unitOfMeasures.add(uom1);
-		
+
 		UnitOfMeasure uom2 = new UnitOfMeasure();
-		uom1.setId(2L);
+		uom1.setId("2");
 		unitOfMeasures.add(uom2);
-		
+
 		when(unitOfMeasureRepository.findAll()).thenReturn(unitOfMeasures);
-		
+
 		Set<UnitOfMeasureCommand> commands = unitOfMeasureService.listAllUoms();
-		
+
 		assertEquals(2, commands.size());
 		verify(unitOfMeasureRepository).findAll();
 	}

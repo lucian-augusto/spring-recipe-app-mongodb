@@ -12,7 +12,7 @@ import lombok.Setter;
 // error by excluding the equals and hashcodes for the dominant side of the relationship on the non-dominant class
 public class Ingredient {
 
-	private Long Id;
+	private String id;
 
 	private String description;
 	private BigDecimal amount;
