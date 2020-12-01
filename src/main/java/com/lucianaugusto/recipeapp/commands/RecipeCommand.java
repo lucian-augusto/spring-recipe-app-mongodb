@@ -1,7 +1,7 @@
 package com.lucianaugusto.recipeapp.commands;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -46,9 +46,9 @@ public class RecipeCommand {
 	@NotBlank
 	private String directions;
 	private Byte[] image;
-	private Set<IngredientCommand> ingredients = new HashSet<>();
+	private List<IngredientCommand> ingredients = new ArrayList<>();
 	private Difficulty difficulty;
 	private NotesCommand notes;
-	private Set<CategoryCommand> categories = new HashSet<>();
+	private List<CategoryCommand> categories = new ArrayList<>();
 
 }
