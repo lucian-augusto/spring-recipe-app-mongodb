@@ -157,7 +157,7 @@
                                         <input type="hidden" th:field="*{ingredients[__${idx.index}__].amount}"/>
                                         <input type="hidden" th:field="*{ingredients[__${idx.index}__].uom.id}"/>
                                     </div>
-                                    <div th:each="catEach.idx : ${recipe.categories}">
+                                    <div th:each="catEach, idx : ${recipe.categories}">
                                         <input type="hidden" th:field="*{categories[__${idx.index}__].id}"/>
                                     </div>
                                 </div>
