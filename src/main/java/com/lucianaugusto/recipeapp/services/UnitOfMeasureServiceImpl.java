@@ -1,34 +1,29 @@
 package com.lucianaugusto.recipeapp.services;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import org.springframework.stereotype.Service;
 
 import com.lucianaugusto.recipeapp.commands.UnitOfMeasureCommand;
 import com.lucianaugusto.recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
-import com.lucianaugusto.recipeapp.repositories.UnitOfMeasureRepository;
+import com.lucianaugusto.recipeapp.repositories.reactive.UnitOfMeasureReactiveRepository;
+
+import reactor.core.publisher.Flux;
 
 @Service
 public class UnitOfMeasureServiceImpl implements UnitOfMeasureService {
 
-	private final UnitOfMeasureRepository unitOfMeasureRepository;
+	private final UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
 	private final UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand;
-	
-	
-	public UnitOfMeasureServiceImpl(UnitOfMeasureRepository unitOfMeasureRepository,
+
+	public UnitOfMeasureServiceImpl(UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository,
 			UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand) {
-		this.unitOfMeasureRepository = unitOfMeasureRepository;
+		this.unitOfMeasureReactiveRepository = unitOfMeasureReactiveRepository;
 		this.unitOfMeasureToUnitOfMeasureCommand = unitOfMeasureToUnitOfMeasureCommand;
 	}
 
-
 	@Override
-	public Set<UnitOfMeasureCommand> listAllUoms() {
-		return StreamSupport.stream(unitOfMeasureRepository.findAll().spliterator(), false)
-				.map(unitOfMeasureToUnitOfMeasureCommand::convert)
-				.collect(Collectors.toSet());
+	public Flux<UnitOfMeasureCommand> listAllUoms() {
+		return unitOfMeasureReactiveRepository.findAll().map(unitOfMeasureToUnitOfMeasureCommand::convert);
+
 	}
 
 }

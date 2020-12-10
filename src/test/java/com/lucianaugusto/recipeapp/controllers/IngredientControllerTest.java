@@ -8,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.util.HashSet;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -21,9 +19,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.lucianaugusto.recipeapp.commands.IngredientCommand;
 import com.lucianaugusto.recipeapp.commands.RecipeCommand;
+import com.lucianaugusto.recipeapp.commands.UnitOfMeasureCommand;
 import com.lucianaugusto.recipeapp.services.IngredientService;
 import com.lucianaugusto.recipeapp.services.RecipeService;
 import com.lucianaugusto.recipeapp.services.UnitOfMeasureService;
+
+import reactor.core.publisher.Flux;
 
 public class IngredientControllerTest {
 
@@ -68,7 +69,7 @@ public class IngredientControllerTest {
 		command.setId(id);
 
 		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(command);
-		when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
+		when(unitOfMeasureService.listAllUoms()).thenReturn(Flux.just(new UnitOfMeasureCommand()));
 
 		mockMvc.perform(get("/recipe/" + id + "/ingredient/new")).andExpect(status().isOk())
 				.andExpect(view().name("recipe/ingredient/ingredientform"))
@@ -85,7 +86,7 @@ public class IngredientControllerTest {
 
 		when(ingredientService.findByRecipeIdAndIngredientId(ArgumentMatchers.anyString(),
 				ArgumentMatchers.anyString())).thenReturn(ingredientCommand);
-		when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
+		when(unitOfMeasureService.listAllUoms()).thenReturn(Flux.just(new UnitOfMeasureCommand()));
 
 		mockMvc.perform(get("/recipe/" + recipeId + "/ingredient/" + ingredientId + "/update"))
 				.andExpect(status().isOk()).andExpect(view().name("recipe/ingredient/ingredientform"))

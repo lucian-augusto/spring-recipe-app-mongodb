@@ -4,8 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +14,9 @@ import org.mockito.MockitoAnnotations;
 import com.lucianaugusto.recipeapp.commands.UnitOfMeasureCommand;
 import com.lucianaugusto.recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.lucianaugusto.recipeapp.domain.UnitOfMeasure;
-import com.lucianaugusto.recipeapp.repositories.UnitOfMeasureRepository;
+import com.lucianaugusto.recipeapp.repositories.reactive.UnitOfMeasureReactiveRepository;
+
+import reactor.core.publisher.Flux;
 
 public class UnitOfMeasureServiceImplTest {
 
@@ -23,33 +24,30 @@ public class UnitOfMeasureServiceImplTest {
 	UnitOfMeasureService unitOfMeasureService;
 
 	@Mock
-	UnitOfMeasureRepository unitOfMeasureRepository;
+	UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
 
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		unitOfMeasureService = new UnitOfMeasureServiceImpl(unitOfMeasureRepository,
+		unitOfMeasureService = new UnitOfMeasureServiceImpl(unitOfMeasureReactiveRepository,
 				unitOfMeasureToUnitOfMeasureCommand);
 	}
 
 	@Test
 	public void testListAllUoms() throws Exception {
-		Set<UnitOfMeasure> unitOfMeasures = new HashSet<>();
 		UnitOfMeasure uom1 = new UnitOfMeasure();
 		uom1.setId("1");
-		unitOfMeasures.add(uom1);
 
 		UnitOfMeasure uom2 = new UnitOfMeasure();
 		uom1.setId("2");
-		unitOfMeasures.add(uom2);
 
-		when(unitOfMeasureRepository.findAll()).thenReturn(unitOfMeasures);
+		when(unitOfMeasureReactiveRepository.findAll()).thenReturn(Flux.just(uom1, uom2));
 
-		Set<UnitOfMeasureCommand> commands = unitOfMeasureService.listAllUoms();
+		List<UnitOfMeasureCommand> commands = unitOfMeasureService.listAllUoms().collectList().block();
 
 		assertEquals(2, commands.size());
-		verify(unitOfMeasureRepository).findAll();
+		verify(unitOfMeasureReactiveRepository).findAll();
 	}
 
 }
