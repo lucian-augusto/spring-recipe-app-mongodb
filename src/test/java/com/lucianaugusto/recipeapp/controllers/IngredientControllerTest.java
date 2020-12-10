@@ -55,7 +55,7 @@ public class IngredientControllerTest {
 		String id = "1";
 		RecipeCommand command = new RecipeCommand();
 
-		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(command);
+		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(Mono.just(command));
 
 		mockMvc.perform(get("/recipe/" + id + "/ingredients")).andExpect(status().isOk())
 				.andExpect(view().name("recipe/ingredient/list")).andExpect(model().attributeExists("recipe"));
@@ -69,7 +69,7 @@ public class IngredientControllerTest {
 		RecipeCommand command = new RecipeCommand();
 		command.setId(id);
 
-		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(command);
+		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(Mono.just(command));
 		when(unitOfMeasureService.listAllUoms()).thenReturn(Flux.just(new UnitOfMeasureCommand()));
 
 		mockMvc.perform(get("/recipe/" + id + "/ingredient/new")).andExpect(status().isOk())

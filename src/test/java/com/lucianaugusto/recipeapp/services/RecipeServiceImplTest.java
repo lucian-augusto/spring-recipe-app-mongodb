@@ -7,10 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -20,14 +16,17 @@ import org.mockito.MockitoAnnotations;
 import com.lucianaugusto.recipeapp.converters.RecipeCommandToRecipe;
 import com.lucianaugusto.recipeapp.converters.RecipeToRecipeCommand;
 import com.lucianaugusto.recipeapp.domain.Recipe;
-import com.lucianaugusto.recipeapp.repositories.RecipeRepository;
+import com.lucianaugusto.recipeapp.repositories.reactive.RecipeReactiveRepository;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class RecipeServiceImplTest {
 
 	RecipeServiceImpl recipeService;
 
 	@Mock
-	RecipeRepository recipeRepository;
+	RecipeReactiveRepository recipeReactiveRepository;
 
 	@Mock
 	RecipeCommandToRecipe recipeCommandToRecipe;
@@ -39,22 +38,20 @@ public class RecipeServiceImplTest {
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 
-		recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
+		recipeService = new RecipeServiceImpl(recipeReactiveRepository, recipeCommandToRecipe, recipeToRecipeCommand);
 	}
 
 	@Test
 	public void testGetRecipes() throws Exception {
 		Recipe recipe = new Recipe();
-		HashSet<Recipe> recipeData = new HashSet<>();
-		recipeData.add(recipe);
 
-		when(recipeRepository.findAll()).thenReturn(recipeData);
+		when(recipeReactiveRepository.findAll()).thenReturn(Flux.just(recipe));
 
-		Set<Recipe> recipes = recipeService.getRecipes();
+		Flux<Recipe> recipes = recipeService.getRecipes();
 
-		assertEquals(recipes.size(), 1);
-		verify(recipeRepository, times(1)).findAll();
-		verify(recipeRepository, never()).findById(ArgumentMatchers.anyString());
+		assertEquals(Long.valueOf(1L), recipes.count().block());
+		verify(recipeReactiveRepository, times(1)).findAll();
+		verify(recipeReactiveRepository, never()).findById(ArgumentMatchers.anyString());
 	}
 
 	@Test
@@ -62,23 +59,24 @@ public class RecipeServiceImplTest {
 		Recipe recipe = new Recipe();
 		recipe.setId("1");
 
-		when(recipeRepository.findById(ArgumentMatchers.anyString())).thenReturn(Optional.of(recipe));
+		when(recipeReactiveRepository.findById(ArgumentMatchers.anyString())).thenReturn(Mono.just(recipe));
 
-		Recipe foundRecipe = recipeService.findById("1");
+		Mono<Recipe> foundRecipe = recipeService.findById("1");
 
 		assertNotNull("Null recipe returned", foundRecipe);
-		verify(recipeRepository, times(1)).findById(ArgumentMatchers.anyString());
-		verify(recipeRepository, never()).findAll();
+		verify(recipeReactiveRepository, times(1)).findById(ArgumentMatchers.anyString());
+		verify(recipeReactiveRepository, never()).findAll();
 	}
 
 	@Test
 	public void testDeleteById() throws Exception {
 		String id = "1";
+		when(recipeReactiveRepository.deleteById(id)).thenReturn(Mono.empty());
 		recipeService.deleteById(id);
 
 		// No 'when', since the method has void return type
 
-		verify(recipeRepository).deleteById(ArgumentMatchers.anyString());
+		verify(recipeReactiveRepository).deleteById(ArgumentMatchers.anyString());
 	}
 
 }

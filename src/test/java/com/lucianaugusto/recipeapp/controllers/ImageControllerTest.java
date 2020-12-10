@@ -25,6 +25,8 @@ import com.lucianaugusto.recipeapp.commands.RecipeCommand;
 import com.lucianaugusto.recipeapp.services.ImageService;
 import com.lucianaugusto.recipeapp.services.RecipeService;
 
+import reactor.core.publisher.Mono;
+
 public class ImageControllerTest {
 
 	@Before
@@ -42,7 +44,7 @@ public class ImageControllerTest {
 		RecipeCommand command = new RecipeCommand();
 		command.setId("1");
 
-		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(command);
+		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(Mono.just(command));
 
 		// when
 		mockMvc.perform(get("/recipe/1/image")).andExpect(status().isOk()).andExpect(model().attributeExists("recipe"));
@@ -77,7 +79,7 @@ public class ImageControllerTest {
 
 		command.setImage(byteBoxed);
 
-		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(command);
+		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(Mono.just(command));
 
 		// when
 		MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeimage")).andExpect(status().isOk())

@@ -12,7 +12,10 @@ import com.lucianaugusto.recipeapp.commands.RecipeCommand;
 import com.lucianaugusto.recipeapp.converters.RecipeCommandToRecipe;
 import com.lucianaugusto.recipeapp.converters.RecipeToRecipeCommand;
 import com.lucianaugusto.recipeapp.domain.Recipe;
-import com.lucianaugusto.recipeapp.repositories.RecipeRepository;
+import com.lucianaugusto.recipeapp.repositories.reactive.RecipeReactiveRepository;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,7 +27,7 @@ public class RecipeServiceIntegrationTest {
 	RecipeService recipeService;
 
 	@Autowired
-	RecipeRepository recipeRepository;
+	RecipeReactiveRepository recipeReactiveRepository;
 
 	@Autowired
 	RecipeCommandToRecipe recipeCommandToRecipe;
@@ -35,19 +38,19 @@ public class RecipeServiceIntegrationTest {
 	@Test
 	public void testSaveOfDescription() throws Exception {
 		// Given
-		Iterable<Recipe> recipes = recipeRepository.findAll();
-		Recipe testRecipe = recipes.iterator().next();
+		Flux<Recipe> recipes = recipeReactiveRepository.findAll();
+		Recipe testRecipe = recipes.blockFirst();
 		RecipeCommand testRecipeCommand = recipeToRecipeCommand.convert(testRecipe);
 
 		// When
 		testRecipeCommand.setDescription(NEW_DESCRIPTION);
-		RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand);
+		Mono<RecipeCommand> savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand);
 
 		// Then
-		assertEquals(NEW_DESCRIPTION, savedRecipeCommand.getDescription());
-		assertEquals(testRecipe.getId(), savedRecipeCommand.getId());
-		assertEquals(testRecipe.getCategories().size(), savedRecipeCommand.getCategories().size());
-		assertEquals(testRecipe.getIngredients().size(), savedRecipeCommand.getIngredients().size());
+		assertEquals(NEW_DESCRIPTION, savedRecipeCommand.block().getDescription());
+		assertEquals(testRecipe.getId(), savedRecipeCommand.block().getId());
+		assertEquals(testRecipe.getCategories().size(), savedRecipeCommand.block().getCategories().size());
+		assertEquals(testRecipe.getIngredients().size(), savedRecipeCommand.block().getIngredients().size());
 	}
 
 }

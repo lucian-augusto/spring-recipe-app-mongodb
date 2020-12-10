@@ -21,6 +21,8 @@ import com.lucianaugusto.recipeapp.commands.RecipeCommand;
 import com.lucianaugusto.recipeapp.exceptions.NotFoundException;
 import com.lucianaugusto.recipeapp.services.RecipeService;
 
+import reactor.core.publisher.Mono;
+
 public class RecipeControllerTest {
 
 	@Mock
@@ -46,7 +48,7 @@ public class RecipeControllerTest {
 		RecipeCommand command = new RecipeCommand();
 		command.setId(id);
 
-		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(command);
+		when(recipeService.findCommandById(ArgumentMatchers.anyString())).thenReturn(Mono.just(command));
 
 		mockMvc.perform(get("/recipe/" + id + "/show")).andExpect(status().isOk()).andExpect(view().name("recipe/show"))
 				.andExpect(model().attributeExists("recipe"));
@@ -77,7 +79,7 @@ public class RecipeControllerTest {
 		RecipeCommand command = new RecipeCommand();
 		command.setId(id);
 
-		when(recipeService.findCommandById(ArgumentMatchers.any())).thenReturn(command);
+		when(recipeService.findCommandById(ArgumentMatchers.any())).thenReturn(Mono.just(command));
 
 		mockMvc.perform(get("/recipe/" + id + "/update")).andExpect(status().isOk())
 				.andExpect(view().name("recipe/recipeform")).andExpect(model().attributeExists("recipe"));
@@ -89,7 +91,7 @@ public class RecipeControllerTest {
 		RecipeCommand command = new RecipeCommand();
 		command.setId(id);
 
-		when(recipeService.saveRecipeCommand(ArgumentMatchers.any())).thenReturn(command);
+		when(recipeService.saveRecipeCommand(ArgumentMatchers.any())).thenReturn(Mono.just(command));
 
 		mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("id", "")
 				.param("description", "Some String").param("directions", "directions"))
@@ -102,7 +104,7 @@ public class RecipeControllerTest {
 		RecipeCommand command = new RecipeCommand();
 		command.setId(id);
 
-		when(recipeService.saveRecipeCommand(ArgumentMatchers.any(RecipeCommand.class))).thenReturn(command);
+		when(recipeService.saveRecipeCommand(ArgumentMatchers.any(RecipeCommand.class))).thenReturn(Mono.just(command));
 
 		mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("id", ""))
 				.andExpect(status().isOk()).andExpect(view().name("recipe/recipeform"))
