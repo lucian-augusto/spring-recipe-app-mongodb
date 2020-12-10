@@ -25,6 +25,7 @@ import com.lucianaugusto.recipeapp.services.RecipeService;
 import com.lucianaugusto.recipeapp.services.UnitOfMeasureService;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class IngredientControllerTest {
 
@@ -85,7 +86,7 @@ public class IngredientControllerTest {
 		IngredientCommand ingredientCommand = new IngredientCommand();
 
 		when(ingredientService.findByRecipeIdAndIngredientId(ArgumentMatchers.anyString(),
-				ArgumentMatchers.anyString())).thenReturn(ingredientCommand);
+				ArgumentMatchers.anyString())).thenReturn(Mono.just(ingredientCommand));
 		when(unitOfMeasureService.listAllUoms()).thenReturn(Flux.just(new UnitOfMeasureCommand()));
 
 		mockMvc.perform(get("/recipe/" + recipeId + "/ingredient/" + ingredientId + "/update"))
@@ -101,7 +102,7 @@ public class IngredientControllerTest {
 		command.setId(ingredientId);
 		command.setRecipeId(recipeId);
 
-		when(ingredientService.saveIngredientCommand(ArgumentMatchers.any())).thenReturn(command);
+		when(ingredientService.saveIngredientCommand(ArgumentMatchers.any())).thenReturn(Mono.just(command));
 
 		mockMvc.perform(post("/recipe/" + recipeId + "/ingredient").contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", "").param("description", "TEST DESCRIPTION")).andExpect(status().is3xxRedirection())
@@ -110,6 +111,9 @@ public class IngredientControllerTest {
 
 	@Test
 	public void testDeleteIngredient() throws Exception {
+		when(ingredientService.deleteById(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+				.thenReturn(Mono.empty());
+
 		mockMvc.perform(get("/recipe/2/ingredient/3/delete")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/recipe/2/ingredients"));
 
