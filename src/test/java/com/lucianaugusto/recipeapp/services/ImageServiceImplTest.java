@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -16,7 +14,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lucianaugusto.recipeapp.domain.Recipe;
-import com.lucianaugusto.recipeapp.repositories.RecipeRepository;
+import com.lucianaugusto.recipeapp.repositories.reactive.RecipeReactiveRepository;
+
+import reactor.core.publisher.Mono;
 
 public class ImageServiceImplTest {
 
@@ -35,9 +35,9 @@ public class ImageServiceImplTest {
 
 		Recipe recipe = new Recipe();
 		recipe.setId(id);
-		Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-		when(repository.findById(ArgumentMatchers.anyString())).thenReturn(recipeOptional);
+		when(repository.findById(ArgumentMatchers.anyString())).thenReturn(Mono.just(recipe));
+		when(repository.save(ArgumentMatchers.any(Recipe.class))).thenReturn(Mono.just(recipe));
 
 		ArgumentCaptor<Recipe> captor = ArgumentCaptor.forClass(Recipe.class);
 
@@ -45,12 +45,13 @@ public class ImageServiceImplTest {
 		service.saveImageFile(id, file);
 
 		// then
+		verify(repository).findById(ArgumentMatchers.anyString());
 		verify(repository).save(captor.capture());
 		assertEquals(file.getBytes().length, captor.getValue().getImage().length);
 	}
 
 	@Mock
-	private RecipeRepository repository;
+	private RecipeReactiveRepository repository;
 
 	private ImageService service;
 }

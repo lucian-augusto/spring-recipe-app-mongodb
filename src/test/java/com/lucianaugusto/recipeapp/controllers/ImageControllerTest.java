@@ -57,6 +57,8 @@ public class ImageControllerTest {
 		MockMultipartFile expectedFile = new MockMultipartFile("imagefile", "testing.txt", "text/plain",
 				"Lucian Augusto".getBytes());
 
+		when(imageService.saveImageFile(ArgumentMatchers.anyString(), ArgumentMatchers.any())).thenReturn(Mono.empty());
+
 		mockMvc.perform(multipart("/recipe/1/image").file(expectedFile)).andExpect(status().is3xxRedirection())
 				.andExpect(header().string("Location", "/recipe/1/show"));
 

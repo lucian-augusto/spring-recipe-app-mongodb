@@ -6,44 +6,48 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lucianaugusto.recipeapp.domain.Recipe;
-import com.lucianaugusto.recipeapp.repositories.RecipeRepository;
+import com.lucianaugusto.recipeapp.repositories.reactive.RecipeReactiveRepository;
 
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
 public class ImageServiceImpl implements ImageService {
 
-	private final RecipeRepository recipeRepository;
+	private final RecipeReactiveRepository recipeReactiveRepository;
 
-	public ImageServiceImpl(RecipeRepository recipeRepository) {
-		this.recipeRepository = recipeRepository;
+	public ImageServiceImpl(RecipeReactiveRepository recipeReactiveRepository) {
+		this.recipeReactiveRepository = recipeReactiveRepository;
 	}
 
 	@Override
-	public void saveImageFile(String recipeId, MultipartFile file) {
+	public Mono<Void> saveImageFile(String recipeId, MultipartFile file) {
 		log.debug("Received a file");
-		try {
-			Recipe recipe = recipeRepository.findById(recipeId).get();
 
-			Byte[] byteObjects = new Byte[file.getBytes().length];
+		Mono<Recipe> recipeMono = recipeReactiveRepository.findById(recipeId)//
+				.map(recipe -> {
+					Byte[] byteObjects = new Byte[0];
 
-			int i = 0;
+					try {
+						byteObjects = new Byte[file.getBytes().length];
 
-			for (byte b : file.getBytes()) { // Since there's not autoboxing for arrays, we have to do it manually from
-												// scratch
-				byteObjects[i++] = b;
-			}
+						int i = 0;
 
-			recipe.setImage(byteObjects);
+						for (byte b : file.getBytes()) {
+							byteObjects[i++] = b;
+						}
 
-			recipeRepository.save(recipe);
+						recipe.setImage(byteObjects);
 
-		} catch (IOException e) {
-			// TODO improve error handling
-			log.error("Error occurred " + e);
-			e.printStackTrace();
-		}
+						return recipe;
+					} catch (IOException e) {
+						e.printStackTrace();
+						throw new RuntimeException();
+					}
+				});
+		recipeReactiveRepository.save(recipeMono.block()).block();
 
+		return Mono.empty();
 	}
 }
